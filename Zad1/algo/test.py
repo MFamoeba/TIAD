@@ -1,4 +1,10 @@
 import numpy as np
+from matplotlib import pyplot as plt
+
+import Zad1.algo.pso as pso
+import Zad1.algo.de as de
+import Zad1.algo.tools as tools
+from Zad1.algo.tools import swarm_generator
 
 lower_bound = -100
 upper_bound = 100
@@ -20,7 +26,7 @@ c1 = 1
 c2 = 2
 
 swarm = swarm_generator(pop_size, lower_bound, upper_bound, dimensions)
-wynik, historia = pso(objective_func, swarm, w, c1, c2, max_iter, tol)
+wynik, historia = pso(tools.sphere_func, swarm, w, c1, c2, max_iter, tol)
 print(historia)
 plt.plot(historia)
 plt.show()
