@@ -3,9 +3,13 @@ import numpy as np
 
 def devo(population, mutation_func, objective_func, cross_function, k=1, f=0.5, max_iter=100):
     population = np.array(population)
+    best_particle_history = []
     for i in range(max_iter):
         mutation_func(population, objective_func, cross_function, k, f)
-    return population
+        swarm_current_fitness = np.array([objective_func(particle) for particle in population])
+        best_index = np.argmin(swarm_current_fitness)
+        best_particle_history.append(population[best_index])
+    return population, best_particle_history
 
 
 def curr_k(population, objective_func, cross_function, k=1, F=0.5):
@@ -45,7 +49,7 @@ def bin_cross_function(parent_a, parent_b, pc=0.5):
     trial = [parent_b[i] if p[i] < pc else parent_a[i] for i in range(dims)]
     return trial
 
-
+#todo to nie jest expo
 def exp_cross_function(parent_a, parent_b, pc=0.5, D=2):
     dims = len(parent_a)
     p = np.random.rand(dims)

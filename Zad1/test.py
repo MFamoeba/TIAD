@@ -5,9 +5,10 @@ import Zad1.algo.pso as pso
 import Zad1.algo.de as de
 import Zad1.algo.tools as tools
 from Zad1.algo.tools import swarm_generator
+import Zad1.fun.testFuctionParameters
 
-lower_bound = -100
-upper_bound = 100
+lower_bound = -1
+upper_bound = 4
 dimensions = 20
 
 # wielkosć populacji
@@ -26,7 +27,8 @@ c1 = 1
 c2 = 2
 
 swarm = swarm_generator(pop_size, lower_bound, upper_bound, dimensions)
-wynik, historia = pso(tools.sphere_func, swarm, w, c1, c2, max_iter, tol)
-print(historia)
-plt.plot(historia)
-plt.show()
+#wynik, historia = pso.pso(tools.griewank_function, swarm, w, c1, c2, max_iter, tol)
+#print(historia)
+#plt.plot(historia)
+#plt.yscale('log')
+#plt.show()
