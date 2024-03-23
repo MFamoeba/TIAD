@@ -5,18 +5,17 @@ import Zad1.algo.pso as pso
 import Zad1.algo.de as de
 import Zad1.algo.tools as tools
 from Zad1.algo.tools import swarm_generator
-import Zad1.fun.testFuctionParameters
+import Zad1.fun.testFunctionParameters as testFunctionParameters
 
-lower_bound = -1
-upper_bound = 4
-dimensions = 20
+objective_func, dimensions, lower_bound, upper_bound, accuracy = testFunctionParameters.testFunctionParameters.SPHERE.value
+print(testFunctionParameters.testFunctionParameters.HELP.value)
+print(objective_func, dimensions, lower_bound, upper_bound, accuracy)
 
 # wielkosć populacji
 pop_size = 200
 
 # warunki stopu, max liczba pokolen, tolerancja
 max_iter = 1000
-tol = 1e-6
 
 # parametry
 # inercja(0,1) -> w

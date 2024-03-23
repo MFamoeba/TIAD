@@ -1,5 +1,6 @@
 import numpy as np
 import Zad1.algo.de as dv
+from Zad1.algo.tools import find_new_best_positions
 
 
 def pso(objective_func, swarm, w=0.5, c1=1, c2=2, max_iter=100, tol=1e-6):
@@ -83,14 +84,4 @@ def pso_de(objective_func, swarm, w=0.5, c1=1, c2=2, max_iter=100, tol=1e-6):
     return best_particle_position, best_particle_history
 
 
-def find_new_best_positions(best_positions, current_positions, swarm_best_fitness, swarm_current_fitness):
-    new_best_positions = []
-    new_best_fitness = []
-    for i in range(len(best_positions)):
-        if swarm_best_fitness[i] < swarm_current_fitness[i]:
-            new_best_positions.append(best_positions[i])
-            new_best_fitness.append(swarm_best_fitness[i])
-        else:
-            new_best_positions.append(current_positions[i])
-            new_best_fitness.append(swarm_current_fitness[i])
-    return np.array(new_best_positions), np.array(new_best_fitness)
+
