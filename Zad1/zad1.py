@@ -7,7 +7,7 @@ import Zad1.algo.tools as tools
 from Zad1.algo.tools import swarm_generator
 import Zad1.fun.testFunctionParameters as testFunctionParameters
 
-objective_func, dimensions, lower_bound, upper_bound, accuracy = testFunctionParameters.testFunctionParameters.SPHERE.value
+nazwa, objective_func, dimensions, lower_bound, upper_bound, accuracy = testFunctionParameters.testFunctionParameters.ZAKHAROV.value
 print(testFunctionParameters.testFunctionParameters.HELP.value)
 print(objective_func, dimensions, lower_bound, upper_bound, accuracy)
 
@@ -25,9 +25,20 @@ w = 0.5
 c1 = 1
 c2 = 2
 
-swarm = swarm_generator(pop_size, lower_bound, upper_bound, dimensions)
-wynik, historia = pso.pso(objective_func, swarm, w, c1, c2, max_iter, accuracy)
-print(historia)
+iter = 5
+historie = []
+for i in range(iter):
+    swarm = swarm_generator(pop_size, lower_bound, upper_bound, dimensions)
+    wynik, historia = pso.pso(objective_func, swarm, w, c1, c2, max_iter, accuracy)
+    historie.append(historia)
+
+means = np.mean(historie, axis=0)
+std_devs = np.std(historie, axis=0)
+plt.errorbar(range(len(means)), means, yerr=std_devs, fmt='o', capsize=5)
+plt.xticks(range(len(means)))
+plt.title(nazwa+"-"+str(dimensions))
+plt.xlabel('Oś X')
+plt.ylabel('Oś Y')
 plt.plot(historia)
 plt.yscale('log')
 plt.show()

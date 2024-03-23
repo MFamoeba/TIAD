@@ -3,7 +3,7 @@ import Zad1.algo.de as dv
 from Zad1.algo.tools import find_new_best_positions
 
 
-def pso_de(objective_func, swarm, w=0.5, c1=1, c2=2, max_iter=100, tol=1e-6):
+def pso_de(objective_func, swarm, k=1, f=0.5, w=0.5, c1=1, c2=2, tol=1e-6, max_iter=500):
     current_positions = np.array(swarm.copy())
     best_positions = current_positions.copy()
 
@@ -28,16 +28,18 @@ def pso_de(objective_func, swarm, w=0.5, c1=1, c2=2, max_iter=100, tol=1e-6):
         inertia = inertia + speed
         current_positions = current_positions + speed
 
-        best_positions, swarm_best_fitness = find_new_best_positions(best_positions, current_positions,
-                                                                     objective_func)
+        best_positions, swarm_best_fitness, current_positions_fitness = find_new_best_positions(best_positions,
+                                                                                                current_positions,
+                                                                                                objective_func)
 
-        dv.curr_k(best_positions, objective_func, dv.bin_cross_function)
+        dv.curr_k(best_positions, objective_func, dv.bin_cross_function, k, f)
         best_index = np.argmin(swarm_best_fitness)
         best_particle_position = current_positions[best_index]
         best_particle_fitness = swarm_best_fitness[best_index]
         best_particle_history.append(best_particle_fitness)
-        if np.max(swarm_best_fitness) - np.min(swarm_best_fitness) < tol:
-            break
+        # stop after achiving certain accuracy
+        #   if np.max(swarm_current_fitness) - np.min(swarm_current_fitness) < tol:
+        #       break
 
     # Return the best solution found by the PSO algorithm
     return best_particle_position, best_particle_history
@@ -67,14 +69,15 @@ def pso(objective_func, swarm, w=0.5, c1=1, c2=2, max_iter=100, tol=1e-6):
 
         inertia = inertia + speed
         current_positions = current_positions + speed
-        best_positions, swarm_best_fitness = find_new_best_positions(best_positions, current_positions,
+        best_positions, swarm_best_fitness, swarm_current_fitness = find_new_best_positions(best_positions, current_positions,
                                                                      objective_func)
         best_index = np.argmin(swarm_best_fitness)
         best_particle_position = current_positions[best_index]
         best_particle_fitness = swarm_best_fitness[best_index]
         best_particle_history.append(best_particle_fitness)
-        if np.max(swarm_best_fitness) - np.min(swarm_best_fitness) < tol:
-            break
+        # stop after achiving certain accuracy
+        #   if np.max(swarm_current_fitness) - np.min(swarm_current_fitness) < tol:
+        #       break
 
     # Return the best solution found by the PSO algorithm
     return best_particle_position, best_particle_history

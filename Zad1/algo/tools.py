@@ -17,4 +17,4 @@ def find_new_best_positions(positions_a, positions_b, objective_func):
         else:
             new_best_positions.append(positions_b[i])
             new_best_fitness.append(fitness_b[i])
-    return np.array(new_best_positions), np.array(new_best_fitness)
+    return np.array(new_best_positions), np.array(new_best_fitness), np.array(fitness_b)

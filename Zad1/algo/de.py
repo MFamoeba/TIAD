@@ -3,16 +3,20 @@ import numpy as np
 from Zad1.algo.tools import find_new_best_positions
 
 
-def devo(population, mutation_func, objective_func, cross_function, k=1, f=0.5, max_iter=100):
+def devo(population, mutation_func, objective_func, cross_function, tol=1e-6, k=1, f=0.5, max_iter=100):
     population = np.array(population)
     best_particle_history = []
     for i in range(max_iter):
         # robienie dziecie
         child_positions = mutation_func(population, objective_func, cross_function, k, f)
         # selekcja
-        population, swarm_current_fitness = find_new_best_positions(population, child_positions, objective_func)
+        population, swarm_current_fitness, child_fitness = find_new_best_positions(population, child_positions, objective_func)
         best_index = np.argmin(swarm_current_fitness)
         best_particle_history.append(population[best_index])
+        # stop after achiving certain accuracy
+    #   if np.max(swarm_current_fitness) - np.min(swarm_current_fitness) < tol:
+    #       break
+
     return population, best_particle_history
 
 
