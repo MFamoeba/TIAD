@@ -1,4 +1,6 @@
 import numpy as np
+
+
 def sphere_func(x):
     x = np.array(x)
     return np.sum(np.square(x))

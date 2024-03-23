@@ -7,9 +7,9 @@ def devo(population, mutation_func, objective_func, cross_function, k=1, f=0.5, 
     population = np.array(population)
     best_particle_history = []
     for i in range(max_iter):
-        #robienie dziecie
+        # robienie dziecie
         child_positions = mutation_func(population, objective_func, cross_function, k, f)
-        #selekcja
+        # selekcja
         population, swarm_current_fitness = find_new_best_positions(population, child_positions, objective_func)
         best_index = np.argmin(swarm_current_fitness)
         best_particle_history.append(population[best_index])
@@ -48,6 +48,7 @@ def curr_to_best_k(population, objective_func, cross_function, k=1, F=0.5, delta
         child_positions.append(cross_function(current_parent, mutant))
     return child_positions
 
+
 def best_k(population, objective_func, cross_function, k=1, F=0.5):
     number_of_candidates = k * 2
     swarm_current_fitness = np.array([objective_func(particle) for particle in population])
@@ -63,6 +64,7 @@ def best_k(population, objective_func, cross_function, k=1, F=0.5):
         # krzyrzowanie
         child_positions.append(cross_function(parent, mutant))
     return child_positions
+
 
 def rand_to_best_k(population, objective_func, cross_function, k=1, F=0.5, delta=0.5):
     number_of_candidates = k * 2

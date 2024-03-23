@@ -26,8 +26,8 @@ c1 = 1
 c2 = 2
 
 swarm = swarm_generator(pop_size, lower_bound, upper_bound, dimensions)
-#wynik, historia = pso.pso(tools.griewank_function, swarm, w, c1, c2, max_iter, tol)
-#print(historia)
-#plt.plot(historia)
-#plt.yscale('log')
-#plt.show()
+wynik, historia = pso.pso(objective_func, swarm, w, c1, c2, max_iter, accuracy)
+print(historia)
+plt.plot(historia)
+plt.yscale('log')
+plt.show()
