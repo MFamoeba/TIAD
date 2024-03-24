@@ -3,25 +3,35 @@ import numpy as np
 from Zad1.algo.tools import find_new_best_positions
 
 
-def devo(population, mutation_func, objective_func, cross_function, tol=1e-6, k=1, f=0.5, max_iter=100):
+def devo(population, objective_func, mutation_func, cross_function, k=1, f=0.5, max_iter=1000, accuracy=1):
     population = np.array(population)
-    best_particle_history = []
+    particle_history = []
+    particle_std = []
+    victorious = -1
     for i in range(max_iter):
         # robienie dziecie
         child_positions = mutation_func(population, objective_func, cross_function, k, f)
         # selekcja
-        population, swarm_current_fitness, child_fitness = find_new_best_positions(population, child_positions, objective_func)
+        population, swarm_current_fitness, child_fitness = find_new_best_positions(population, child_positions,
+                                                                                   objective_func)
         best_index = np.argmin(swarm_current_fitness)
-        best_particle_history.append(population[best_index])
+        best_particle = (swarm_current_fitness[best_index])
+        best_particle_fitness = swarm_current_fitness[best_index]
+        std = np.std(population)
+        particle_history.append(best_particle)
+        particle_std.append(std)
+        if (best_particle_fitness < accuracy and victorious == -1):
+            victorious = i
+            print("Victorious"+str(victorious))
         # stop after achiving certain accuracy
     #   if np.max(swarm_current_fitness) - np.min(swarm_current_fitness) < tol:
     #       break
-
-    return population, best_particle_history
+    history = np.array((particle_history, particle_std))
+    return population, history
 
 
 def curr_k(population, objective_func, cross_function, k=1, F=0.5):
-    number_of_candidates = k * 2
+    number_of_candidates = int(k * 2)
     pop_size = len(population)
     child_positions = []
     for j in range(pop_size):
@@ -30,7 +40,6 @@ def curr_k(population, objective_func, cross_function, k=1, F=0.5):
         candidates = population[np.random.choice(possible_candidates, number_of_candidates, replace=False)]
         half1, half2 = np.split(candidates, 2)
         mutant = parent + F * np.sum(half1 - half2)
-        # krzyrzowanie
         child_positions.append(cross_function(parent, mutant))
     return child_positions
 
@@ -85,6 +94,21 @@ def rand_to_best_k(population, objective_func, cross_function, k=1, F=0.5, delta
         mutant = delta * parent + (1 - delta) * rand + F * np.sum(half1 - half2)
         # krzyrzowanie
         child_positions.append(cross_function(parent, mutant))
+    return child_positions
+
+
+def rand_k(population, objective_func, cross_function, k=1, F=0.5):
+    number_of_candidates = k * 2
+    pop_size = len(population)
+    child_positions = []
+    for j in range(pop_size):
+        possible_candidates = [candidate for candidate in range(pop_size) if candidate != j]
+        candidates = population[np.random.choice(possible_candidates, number_of_candidates + 1, replace=False)]
+        rand = candidates[0]
+        half1, half2 = np.split(candidates[1:], 2)
+        mutant = rand + F * np.sum(half1 - half2)
+        # krzyrzowanie
+        child_positions.append(cross_function(rand, mutant))
     return child_positions
 
 
