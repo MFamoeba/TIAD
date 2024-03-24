@@ -7,7 +7,8 @@ import Zad1.algo.tools as tools
 from Zad1.algo.tools import swarm_generator
 import Zad1.fun.testFunctionParameters as testFunctionParameters
 
-nazwa, objective_func, dimensions, lower_bound, upper_bound, accuracy = testFunctionParameters.testFunctionParameters.SPHERE.value
+testFunct = testFunctionParameters.testFunctionParameters.GRIEWANK.value
+nazwa, objective_func, dimensions, lower_bound, upper_bound, accuracy = testFunct
 print(testFunctionParameters.testFunctionParameters.HELP.value)
 print(objective_func, dimensions, lower_bound, upper_bound, accuracy)
 
@@ -22,7 +23,7 @@ max_iter = 400
 # f - współczynnik abplifikacji wektorów różnicujących (0,1)
 # delta - współczynnik liniowa kombinacja osobnika (0,1) im większy tym bardziej najlepszy niż rodzic
 
-f = 0.8
+f = 0.5
 # parametry algorytmu pso
 # inercja(0,1) ->
 # w - współczynnik innercji
@@ -35,7 +36,7 @@ c1 = 1
 c2 = 2
 
 swarm = swarm_generator(pop_size, lower_bound, upper_bound, dimensions)
-print("DE/curr_to_best/2/bin do " + nazwa + "\n" + " delta = 0.5 f = " + str(f))
+print("DE/curr_to_best/2/bin do " + nazwa + "\n" + "pc = 0.5, delta = 0.5, f = " + str(f))
 # pierwsza
 wynik, historia = de.devo(swarm, objective_func, de.curr_to_best_k, de.bin_cross_function, 2, f, max_iter, accuracy)
 
@@ -43,7 +44,7 @@ historia_best, historia_std = historia
 
 fig, ax1 = plt.subplots()
 
-fig.suptitle("DE/curr_to_best/2/bin do " + nazwa + "\n" + " delta = 0.5 f = " + str(f))
+fig.suptitle("DE/curr_to_best/2/bin do " + nazwa + "\n" + "pc = 0.5, delta = 0.5 f = " + str(f))
 ax1.plot(historia_best, 'b-')
 ax1.set_xlabel('X')
 ax1.set_ylabel(nazwa + "(x)", color='b')
@@ -60,7 +61,7 @@ plt.show()
 
 # druga
 print(
-    "PSO DE/curr_to_best/2/bin do " + nazwa + "\n delta = 0.5" + ", f=" + str(f) + ", w = " + str(w) + ", c1 = " + str(
+    "PSO DE/curr_to_best/2/bin do " + nazwa + "\npc = 0.5,  delta = 0.5" + ", f=" + str(f) + ", w = " + str(w) + ", c1 = " + str(
         c1) + ", c2 = " + str(c2))
 wynik, historia = pso.pso_de(swarm, objective_func, de.curr_to_best_k, de.bin_cross_function, w, c1, c2, 2, f, max_iter,
                              accuracy)
@@ -71,7 +72,7 @@ fig, ax1 = plt.subplots()
 
 # Plot the first function using blue color
 fig.suptitle(
-    "PSO DE/curr_to_best/2/bin do " + nazwa + "\n delta = 0.5" + ", f=" + str(f) + ", w = " + str(w) + ", c1 = " + str(
+    "PSO DE/curr_to_best/2/bin do " + nazwa + "\npc = 0.5,  delta = 0.5" + ", f=" + str(f) + ", w = " + str(w) + ", c1 = " + str(
         c1) + ", c2 = " + str(c2))
 ax1.plot(historia_best, 'b-')
 ax1.set_xlabel('X')
@@ -88,7 +89,7 @@ ax2.set_yscale('log')
 plt.show()
 
 # trzecia
-print("PSO z DE/rand/5/bin" + nazwa + "\n" + ", f=" + str(f) + ", w = " + str(w) + ", c1 = " + str(
+print("PSO z DE/rand/5/bin do " + nazwa + "\n" + "pc = 0.5, f=" + str(f) + ", w = " + str(w) + ", c1 = " + str(
     c1) + ", c2 = " + str(c2))
 wynik, historia = pso.pso_de(swarm, objective_func, de.rand_k, de.bin_cross_function, w, c1, c2, 5, f, max_iter,
                              accuracy)
@@ -98,7 +99,7 @@ historia_best, historia_std = historia
 fig, ax1 = plt.subplots()
 
 # Plot the first function using blue color
-fig.suptitle("PSO z DE/rand/5/bin" + nazwa + "\n" + ", f=" + str(f) + ", w = " + str(w) + ", c1 = " + str(
+fig.suptitle("PSO z DE/rand/5/bin do " + nazwa + "\n" + "pc = 0.5, f=" + str(f) + ", w = " + str(w) + ", c1 = " + str(
     c1) + ", c2 = " + str(c2))
 ax1.plot(historia_best, 'b-')
 ax1.set_xlabel('X')

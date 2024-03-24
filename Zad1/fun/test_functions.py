@@ -40,7 +40,7 @@ def ackley_function(x):
     return -20 * np.exp(-0.2 * np.sqrt(sum1 / n)) - np.exp(sum2 / n) + 20 + np.exp(1)
 
 
-# todo
+
 def brown_function(x):
     x = np.array(x)
     n = len(x)

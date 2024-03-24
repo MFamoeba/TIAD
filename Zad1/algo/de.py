@@ -44,7 +44,7 @@ def curr_k(population, objective_func, cross_function, k=1, F=0.5):
     return child_positions
 
 
-def curr_to_best_k(population, objective_func, cross_function, k=1, F=0.5, delta=0.5):
+def curr_to_best_k(population, objective_func, cross_function, k=1, F=0.5, delta=0.8):
     number_of_candidates = k * 2
     pop_size = len(population)
     swarm_current_fitness = np.array([objective_func(particle) for particle in population])
