@@ -1,6 +1,6 @@
 import numpy as np
 
-from Zad1.algo.tools import find_new_best_positions
+from fun.tools import find_new_best_positions
 
 
 def devo(population, objective_func, mutation_func, cross_function, k=1, f=0.5, max_iter=1000, accuracy=1):

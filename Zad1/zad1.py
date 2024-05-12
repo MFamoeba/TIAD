@@ -1,11 +1,9 @@
-import numpy as np
 from matplotlib import pyplot as plt
 
 import Zad1.algo.pso as pso
 import Zad1.algo.de as de
-import Zad1.algo.tools as tools
-from Zad1.algo.tools import swarm_generator
-import Zad1.fun.testFunctionParameters as testFunctionParameters
+from fun.tools import swarm_generator
+import fun.testFunctionParameters as testFunctionParameters
 
 testFunct = testFunctionParameters.testFunctionParameters.GRIEWANK.value
 nazwa, objective_func, dimensions, lower_bound, upper_bound, accuracy = testFunct

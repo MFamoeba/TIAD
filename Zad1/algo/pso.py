@@ -1,6 +1,5 @@
 import numpy as np
-import Zad1.algo.de as dv
-from Zad1.algo.tools import find_new_best_positions
+from fun.tools import find_new_best_positions
 
 
 def pso_de(swarm, objective_func, mutation_func, cross_func, w=0.5, c1=1, c2=2, k=1, f=0.5, max_iter=500, accuracy=1):

@@ -1,5 +1,9 @@
 import numpy as np
+import matplotlib.pyplot as plt
+
 from numpy.random import rand
+
+from fun.testFunctionParameters import testFunctionParameters as tfp
 
 
 def find_new_best_positions(positions_a, positions_b, objective_func):
@@ -15,11 +19,6 @@ def find_new_best_positions(positions_a, positions_b, objective_func):
             new_best_positions.append(positions_b[i])
             new_best_fitness.append(fitness_b[i])
     return np.array(new_best_positions), np.array(new_best_fitness), np.array(fitness_b)
-
-
-def objective_func(x):
-    x = np.array(x)
-    return np.sum(np.square(x))
 
 
 def swarm_generator(lb, ub, N, dim):
@@ -40,26 +39,21 @@ def boundary(x, lb, ub):
     return x
 
 
-def boa():
+def boa_na3(testfunction=tfp.SPHERE, pop_size=150, max_iter=1000):
     # Parameters
-    max_iter = 100
-    lb = -5  # lowerbound
-    ub = 5
-    dim = 2
-    pop_size = 5
+    name, objective_func, dim, lb, ub, accuracy = testfunction.value
     c = 1  # są współczynnikami odpowiadającymi za regulację powyższej wartości
     a = 0.1  # i według autorów powinny być to liczby rzeczywiste w przedziale [0;1].
     pp = 0.8  # pomocą prawdopodobieństwa przełączenia
     t = 0
     but_positions = swarm_generator(lb, ub, pop_size, dim)
+    history = []
 
     while t < max_iter:
         but_fitness = np.array([objective_func(bat) for bat in but_positions])
         but_smell = np.array([c * but ** a for but in but_fitness])
         best_position = np.argmin(but_fitness)
-        if t % 20 == 0:
-            print("Gen:", t)
-            print("Best position:", but_positions[best_position])
+        history.append(but_fitness[best_position])
         new_but_postions = np.zeros([pop_size, dim], dtype='float')
         new_but_fitness = np.zeros(pop_size, dtype='float')
         for i in range(pop_size):
@@ -77,9 +71,9 @@ def boa():
             for d in range(dim):
                 new_but_postions[i, d] = boundary(new_but_postions[i, d], lb, ub)
         but_positions = new_but_postions
-        c = 1 - 0.6 * np.sqrt(t/max_iter)
+        c = 1 - 0.6 * np.sqrt(t / max_iter)
         a = 0.1 + 0.2 * (t / max_iter)
         t += 1
+    return history
 
 
-boa()
