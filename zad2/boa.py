@@ -18,11 +18,8 @@ def find_new_best_positions(positions_a, positions_b, objective_func):
 
 
 def objective_func(x):
-    n = len(x)
-    sum = 0
-    for i in range(n - 1):
-        sum += 100 * (x[i + 1] - x[i] ** 2) ** 2 + (1 - x[i]) ** 2
-    return sum
+    x = np.array(x)
+    return np.sum(np.square(x))
 
 
 def swarm_generator(lb, ub, N, dim):
@@ -46,11 +43,11 @@ def boundary(x, lb, ub):
 def boa():
     # Parameters
     max_iter = 100
-    lb = -2.048  # lowerbound
-    ub = 2.048
-    dim = 20
-    pop_size = 25
-    c = 0.8  # są współczynnikami odpowiadającymi za regulację powyższej wartości
+    lb = -5  # lowerbound
+    ub = 5
+    dim = 2
+    pop_size = 5
+    c = 1  # są współczynnikami odpowiadającymi za regulację powyższej wartości
     a = 0.1  # i według autorów powinny być to liczby rzeczywiste w przedziale [0;1].
     pp = 0.8  # pomocą prawdopodobieństwa przełączenia
     t = 0
@@ -62,21 +59,25 @@ def boa():
         best_position = np.argmin(but_fitness)
         if t % 20 == 0:
             print("Gen:", t)
-            print("Best position:", but_fitness[best_position])
+            print("Best position:", but_positions[best_position])
         new_but_postions = np.zeros([pop_size, dim], dtype='float')
         new_but_fitness = np.zeros(pop_size, dtype='float')
         for i in range(pop_size):
+            parent = but_positions[i]
             if rand() < pp:
                 # global
-                new_but_postions[i] = but_positions[i] + (
-                            but_positions[best_position] * rand() ** 2 - but_positions[i]) * but_smell[i]
+                diff = but_positions[best_position] * rand() ** 2 - parent
+                new_but_postions[i] = parent + diff * but_smell[i]
             else:
                 # lokal
-                parent = but_positions[i]
                 possible_candidates = [candidate for candidate in range(pop_size) if candidate != i]
                 j, k = but_positions[np.random.choice(possible_candidates, 2, replace=False)]
-                new_but_postions[i] = but_positions[i] + (j * rand() ** 2 - k) * but_smell[i]
+                diff = j * rand() ** 2 - k
+                new_but_postions[i] = parent + diff * but_smell[i]
+            for d in range(dim):
+                new_but_postions[i, d] = boundary(new_but_postions[i, d], lb, ub)
         but_positions = new_but_postions
+        c = 1 - 0.6 * np.sqrt(t/max_iter)
         a = 0.1 + 0.2 * (t / max_iter)
         t += 1
 
