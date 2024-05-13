@@ -11,3 +11,5 @@ class testFunctionParameters(Enum):
     ACKLEY = ("Funkcja Ackleya",ts.ackley_function, 20, -32, 32, 1e-4)
     BROWN = ("Funkcja Browna",ts.brown_function, 20, -1, 4, 1e-3)
     ZAKHAROV = ("Funkcja Zakharowa",ts.zakharov_function, 20, -10, 10, 1e-3)
+    SCHEFFER = ("Funkcja Scheffera",ts.scheffer_function, 20, -100, 100, 1e-3)
+    RASTGRIN = ("Funkcja Rastgrin",ts.rastgrin_function, 20, -5.12, 5.12, 1e-3)

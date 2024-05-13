@@ -48,9 +48,8 @@ def boa_na3(testfunction=tfp.SPHERE, pop_size=150, max_iter=1000):
     t = 0
     but_positions = swarm_generator(lb, ub, pop_size, dim)
     history = []
-
+    but_fitness = np.array([objective_func(bat) for bat in but_positions])
     while t < max_iter:
-        but_fitness = np.array([objective_func(bat) for bat in but_positions])
         but_smell = np.array([c * but ** a for but in but_fitness])
         best_position = np.argmin(but_fitness)
         history.append(but_fitness[best_position])
@@ -70,7 +69,7 @@ def boa_na3(testfunction=tfp.SPHERE, pop_size=150, max_iter=1000):
                 new_but_postions[i] = parent + diff * but_smell[i]
             for d in range(dim):
                 new_but_postions[i, d] = boundary(new_but_postions[i, d], lb, ub)
-        but_positions = new_but_postions
+        but_positions, but_fitness, new_but_fitness = find_new_best_positions(but_positions, new_but_postions, objective_func)
         c = 1 - 0.6 * np.sqrt(t / max_iter)
         a = 0.1 + 0.2 * (t / max_iter)
         t += 1

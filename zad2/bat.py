@@ -1,6 +1,7 @@
 import numpy as np
 from numpy.random import rand
 
+from fun.testFunctionParameters import testFunctionParameters as tfp
 
 def find_new_best_positions(positions_a, positions_b, objective_func):
     fitness_a = [objective_func(particle) for particle in positions_a]
@@ -43,21 +44,17 @@ def boundary(x, lb, ub):
     return x
 
 
-def bat():
+def bat(testfunction=tfp.SPHERE, pop_size=150, max_iter=1000):
     # Parameters
-    lb = -2.048  # lowerbound
-    ub = 2.048
-    dim = 20
-    pop_size = 250
-    a_max = 2
+    name, objective_func, dim, lb, ub, accuracy = testfunction.value
+    a_max = 1.5
     a_min = 1  # min max glosnosc
     alfa = 0.8  # współczynnik alfa od 0 do 1 zmiany głośności
     r_max = 1
     r_min = 0  # min max częstosci
     gamma = 0.8  # współczynnik gamma od 0 zmiany częstosci
-    f_max = 500000
-    f_min = 20000
-    max_iter = 2000
+    f_max = 1000
+    f_min = 0
     t = 0
     bat_postions = swarm_generator(lb, ub, pop_size, dim)
     bat_r = np.random.uniform(r_min, r_max, pop_size)
@@ -65,7 +62,7 @@ def bat():
     bat_velocity = np.zeros([pop_size, dim], dtype='float')
     bat_fitness = np.array([objective_func(bat) for bat in bat_postions])
     best_position = np.argmin(bat_fitness)
-
+    history = [bat_fitness[best_position]]
     t += 1
     while t < max_iter:
         new_bat_postions = np.zeros([pop_size, dim], dtype='float')
@@ -88,20 +85,19 @@ def bat():
             # krok4
             new_bat_fitness[i] = objective_func(new_bat_postions[i])
             if (rand() < bat_a[i]) and (new_bat_fitness[i] < bat_fitness[best_position]):
+                #print("Better by "+str(bat_fitness[i] - new_bat_fitness[i]))
                 bat_a[i] = alfa * bat_a[i]
                 bat_r[i] = bat_r[i] * (1 - np.exp(-gamma * t))
         # krok5
 
         for i in range(pop_size):
             bat_postions[i] = bat_postions[i] if bat_fitness[i] < new_bat_fitness[i] else new_bat_postions[i]
-        bat_fitness = np.array([objective_func(bat) for bat in bat_postions])
+            bat_fitness[i] = new_bat_fitness[i] if new_bat_fitness[i]<bat_fitness[i] else bat_fitness[i]
+
         best_position = np.argmin(bat_fitness)
-        if t % 20 == 0:
-            print("Gen:", t)
-            print("Best position:", bat_fitness[best_position])
+        history.append(bat_fitness[best_position])
         t += 1
+    return history
 
 
-katorga = 1
-for i in range(katorga):
-    bat()
+
