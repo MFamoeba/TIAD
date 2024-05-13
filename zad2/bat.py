@@ -1,4 +1,5 @@
 import numpy as np
+import math
 from numpy.random import rand
 
 from fun.testFunctionParameters import testFunctionParameters as tfp
@@ -47,13 +48,13 @@ def boundary(x, lb, ub):
 def bat(testfunction=tfp.SPHERE, pop_size=150, max_iter=1000):
     # Parameters
     name, objective_func, dim, lb, ub, accuracy = testfunction.value
-    a_max = 1.5
+    a_max = 2
     a_min = 1  # min max glosnosc
     alfa = 0.8  # współczynnik alfa od 0 do 1 zmiany głośności
     r_max = 1
     r_min = 0  # min max częstosci
     gamma = 0.8  # współczynnik gamma od 0 zmiany częstosci
-    f_max = 1000
+    f_max = 100
     f_min = 0
     t = 0
     bat_postions = swarm_generator(lb, ub, pop_size, dim)
@@ -73,7 +74,9 @@ def bat(testfunction=tfp.SPHERE, pop_size=150, max_iter=1000):
 
             for d in range(dim):
                 # krok1
-                bat_velocity[i, d] = bat_velocity[i, d] + (bat_postions[i, d] - bat_postions[best_position, d]) * freq
+                vec1 = bat_velocity[i, d]
+                vec2 = (bat_postions[i, d] - bat_postions[best_position, d]) * freq
+                bat_velocity[i, d] = vec1 + vec2
                 # krok2
                 new_bat_postions[i, d] = bat_postions[i, d] + bat_velocity[i, d]
                 new_bat_postions[i, d] = boundary(new_bat_postions[i, d], lb, ub)
@@ -92,9 +95,7 @@ def bat(testfunction=tfp.SPHERE, pop_size=150, max_iter=1000):
 
         for i in range(pop_size):
             bat_postions[i] = bat_postions[i] if bat_fitness[i] < new_bat_fitness[i] else new_bat_postions[i]
-            bat_fitness[i] = new_bat_fitness[i] if new_bat_fitness[i]<bat_fitness[i] else bat_fitness[i]
 
-        best_position = np.argmin(bat_fitness)
         history.append(bat_fitness[best_position])
         t += 1
     return history
