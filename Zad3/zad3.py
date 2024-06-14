@@ -9,8 +9,8 @@ objective_func, dimensions, lower_bound, upper_bound, accuracy = testFunctionPar
 print(testFunctionParameters.testFunctionParameters.HELP.value)
 
 # dane inicializacyjne
-pop_size = 500
-max_iter = 5000
+pop_size = 200
+max_iter = 1000
 
 # parametry sma
 w = 0.9
@@ -26,7 +26,7 @@ c1 = 1
 c2 = 2
 m = 0.5
 
-best_pos, best_fit, history = pso.run_pso(objective_func, lower_bound, upper_bound, max_iter, pop_size, w_pso, c1, c2, m)
+best_pos, best_fit, history = pso.run_pso(objective_func, lower_bound, upper_bound, max_iter, pop_size, w_pso, c1, c2, m, 2)
 print(best_fit)
 print(history)
 plt.title('Algorytm PSO')
@@ -34,7 +34,7 @@ plt.plot(history)
 plt.yscale('log')
 plt.show()
 
-best_pos, best_fit, history = sma.run_alg(objective_func, lower_bound, upper_bound, max_iter, pop_size, w, vb)
+best_pos, best_fit, history = sma.run_alg(objective_func, lower_bound, upper_bound, max_iter, pop_size, w, vb, 2)
 print(best_fit)
 print(history)
 plt.title('Algorytm SMA')
